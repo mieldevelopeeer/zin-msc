@@ -45,51 +45,55 @@ class ZinAudioEngine {
       // On file:/// protocol, Chromium blocks MediaElementAudioSource and mutes audio output.
       // We skip createMediaElementSource on file:/// so the audio plays smoothly via HTML5 audio.
       if (!isFileProtocol) {
-        // Create Source from HTML5 Audio Element
-        this.sourceNode = this.ctx.createMediaElementSource(this.audioElement);
+        try {
+          // Create Source from HTML5 Audio Element
+          this.sourceNode = this.ctx.createMediaElementSource(this.audioElement);
 
-        // Create Analyser
-        this.analyserNode = this.ctx.createAnalyser();
-        this.analyserNode.fftSize = 256;
-        this.analyserNode.smoothingTimeConstant = 0.8;
+          // Create Analyser
+          this.analyserNode = this.ctx.createAnalyser();
+          this.analyserNode.fftSize = 256;
+          this.analyserNode.smoothingTimeConstant = 0.8;
 
-        // Create 5-band BiquadFilter EQ Nodes
-        let lastNode = this.sourceNode;
+          // Create 5-band BiquadFilter EQ Nodes
+          let lastNode = this.sourceNode;
 
-        this.eqFilters = this.eqFrequencies.map((freq, index) => {
-          const filter = this.ctx.createBiquadFilter();
-          if (index === 0) {
-            filter.type = "lowshelf";
-          } else if (index === this.eqFrequencies.length - 1) {
-            filter.type = "highshelf";
-          } else {
-            filter.type = "peaking";
-            filter.Q.value = 1.4;
+          this.eqFilters = this.eqFrequencies.map((freq, index) => {
+            const filter = this.ctx.createBiquadFilter();
+            if (index === 0) {
+              filter.type = "lowshelf";
+            } else if (index === this.eqFrequencies.length - 1) {
+              filter.type = "highshelf";
+            } else {
+              filter.type = "peaking";
+              filter.Q.value = 1.4;
+            }
+            filter.frequency.value = freq;
+            filter.gain.value = 0;
+
+            lastNode.connect(filter);
+            lastNode = filter;
+            return filter;
+          });
+
+          // Create Stereo Panner for 8D Audio
+          if (this.ctx.createStereoPanner) {
+            this.pannerNode = this.ctx.createStereoPanner();
+            lastNode.connect(this.pannerNode);
+            lastNode = this.pannerNode;
           }
-          filter.frequency.value = freq;
-          filter.gain.value = 0;
 
-          lastNode.connect(filter);
-          lastNode = filter;
-          return filter;
-        });
-
-        // Create Stereo Panner for 8D Audio
-        if (this.ctx.createStereoPanner) {
-          this.pannerNode = this.ctx.createStereoPanner();
-          lastNode.connect(this.pannerNode);
-          lastNode = this.pannerNode;
+          // Connect to Analyser and then to Destination
+          lastNode.connect(this.analyserNode);
+          this.analyserNode.connect(this.ctx.destination);
+        } catch (mediaErr) {
+          console.log("Direct HTML5 audio pipeline active (safe mode):", mediaErr);
         }
-
-        // Connect to Analyser and then to Destination
-        lastNode.connect(this.analyserNode);
-        this.analyserNode.connect(this.ctx.destination);
       }
 
       this.isInitialized = true;
       this.startSpatialLoop();
     } catch (e) {
-      console.warn("Web Audio API running in safe playback mode:", e);
+      console.warn("Web Audio running in safe playback mode:", e);
     }
   }
 

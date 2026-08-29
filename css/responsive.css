@@ -1,19 +1,50 @@
 /* ==========================================================================
-   RESPONSIVE DESIGN & ADAPTIVE LAYOUTS
+   ZIN MUSIC - RESPONSIVE & ADAPTIVE STYLESHEET
+   Flawless UX across Mobile (320px+), Foldables, Tablets, Laptops & Desktops
    ========================================================================== */
-@media (max-width: 1200px) {
+
+/* --------------------------------------------------------------------------
+   1. LARGE & ULTRA-WIDE DESKTOPS (>= 1400px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1400px) {
   :root {
+    --sidebar-width: 270px;
+    --right-panel-width: 360px;
+  }
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 22px;
+  }
+  .quick-picks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. LAPTOPS & MEDIUM DESKTOPS (1025px - 1399px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) and (min-width: 993px) {
+  :root {
+    --sidebar-width: 220px;
     --right-panel-width: 300px;
   }
   .cards-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
+  .quick-picks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 }
 
-@media (max-width: 992px) {
+/* --------------------------------------------------------------------------
+   3. TABLETS & COMPACT LAPTOPS (769px - 992px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) and (min-width: 769px) {
   :root {
     --sidebar-width: 76px;
+    --right-panel-width: 280px;
   }
+
   .sidebar-header .brand-text,
   .sidebar-header .brand-badge,
   .nav-item span,
@@ -23,39 +54,399 @@
   .sidebar-drop-card {
     display: none !important;
   }
+
+  .sidebar-header {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar-header .nav-toggle-btn {
+    display: none;
+  }
+
   .nav-item {
     justify-content: center;
     padding: 12px;
   }
-  .playlist-create-btn {
-    justify-content: center;
-    padding: 12px;
+
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
+
+  .quick-picks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
   .theater-body {
     grid-template-columns: 1fr;
   }
+
   .theater-lyrics-panel {
     display: none;
   }
+
+  .player-bar {
+    grid-template-columns: 1fr 1.6fr auto;
+    padding: 0 16px;
+  }
+
+  .player-right-tools .volume-slider {
+    width: 70px;
+  }
 }
 
+/* --------------------------------------------------------------------------
+   4. ALL MOBILE SCREENS & PHABLETS (<= 768px)
+   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-  .app-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr var(--player-height);
+  /* Dynamic CSS Variables for Mobile */
+  :root {
+    --mobile-nav-height: 56px;
+    --mobile-player-height: 62px;
+    --header-height: 56px;
   }
+
+  /* App Container Grid on Mobile */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Header on Mobile */
+  .top-header {
+    height: var(--header-height);
+    padding: 0 14px;
+    gap: 10px;
+    background: rgba(14, 15, 22, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+  }
+
+  .header-search-box {
+    flex: 1;
+    width: auto;
+    max-width: none;
+    padding: 6px 14px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .header-search-box:focus-within {
+    width: auto;
+  }
+
+  .header-search-input {
+    font-size: 0.85rem;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .btn-eq-fx {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .btn-icon-header {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Mood Filter Chips */
+  .mood-chips-container {
+    padding: 8px 14px;
+    gap: 6px;
+    overflow-x: auto;
+    flex-shrink: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mood-chip {
+    padding: 5px 12px;
+    font-size: 0.76rem;
+    white-space: nowrap;
+  }
+
+  /* Main Scrollable Content Area */
+  .main-wrapper {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .main-scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 14px calc(var(--mobile-nav-height) + var(--mobile-player-height) + var(--safe-bottom) + 24px);
+  }
+
+  /* Hero Banner on Mobile */
+  .main-scroll-content > div:first-child {
+    padding: 20px 16px !important;
+    margin-bottom: 22px !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .main-scroll-content > div:first-child h1 {
+    font-size: clamp(1.35rem, 5.5vw, 1.85rem) !important;
+    line-height: 1.25 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .main-scroll-content > div:first-child p {
+    font-size: 0.84rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .main-scroll-content > div:first-child .btn-play-hero,
+  .main-scroll-content > div:first-child .btn-video-hero {
+    flex: 1 1 calc(50% - 6px);
+    justify-content: center;
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Cards Grid for Memories on Mobile */
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .music-card {
+    padding: 10px;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-img-wrapper {
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 0.82rem;
+    margin-bottom: 2px;
+  }
+
+  .card-artist {
+    font-size: 0.74rem;
+  }
+
+  .card-play-btn {
+    opacity: 1 !important;
+    transform: none !important;
+    width: 36px;
+    height: 36px;
+    right: 6px;
+    bottom: 6px;
+  }
+
+  .card-play-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Quick Picks 8-Song Grid on Mobile */
+  .quick-picks-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .quick-pick-item {
+    padding: 8px 10px;
+    gap: 10px;
+    border-radius: var(--radius-sm);
+  }
+
+  .quick-pick-thumb {
+    width: 44px;
+    height: 44px;
+  }
+
+  .quick-pick-title {
+    font-size: 0.84rem;
+  }
+
+  .quick-pick-artist {
+    font-size: 0.74rem;
+  }
+
+  .btn-item-like {
+    padding: 6px;
+  }
+
+  /* Fixed Bottom Fusion Mini-Player */
+  .player-bar {
+    position: fixed;
+    bottom: calc(var(--mobile-nav-height) + var(--safe-bottom));
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--mobile-player-height);
+    background: rgba(14, 15, 24, 0.97);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-top: 1px solid rgba(255, 100, 150, 0.22);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 55;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Micro-Seekbar at Top of Mini-Player */
+  .player-progress-strip {
+    display: block;
+    height: 3px;
+  }
+
+  .player-progress-strip:hover {
+    height: 4px;
+  }
+
+  .player-track-info {
+    flex: 1;
+    min-width: 0;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .player-thumb-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 6px;
+  }
+
+  .player-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .player-artist {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .btn-player-fav {
+    padding: 4px;
+  }
+
+  .btn-player-fav svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Hide Desktop Center Player Controls on Mobile Mini-Bar */
+  .player-center-controls {
+    display: none !important;
+  }
+
+  /* Mobile Player Right Tools */
+  .player-right-tools {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .mobile-player-controls {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-mobile-play {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background: var(--accent-gradient);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--accent-love-glow);
+    padding: 0;
+  }
+
+  .btn-mobile-next {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    padding: 0;
+  }
+
+  .btn-mobile-next svg, .btn-mobile-play svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .mode-toggle-switch {
+    padding: 1px;
+  }
+
+  .mode-btn {
+    padding: 4px 6px;
+    font-size: 0.65rem;
+  }
+
+  .mode-btn .mode-text {
+    display: none; /* Icon only on mobile to save space */
+  }
+
+  .mode-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  #btn-toggle-right-panel {
+    padding: 6px;
+  }
+
+  #btn-toggle-right-panel svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .volume-control {
+    display: none !important;
+  }
+
+  /* ------------------------------------------------------------------------
+     5. MOBILE BOTTOM NAVIGATION (SIDEBAR CONVERTED)
+     ------------------------------------------------------------------------ */
   .sidebar {
     position: fixed;
-    bottom: var(--player-height);
+    bottom: 0;
     left: 0;
+    right: 0;
     width: 100%;
-    height: 56px;
-    flex-direction: row;
-    border-right: none;
+    height: calc(var(--mobile-nav-height) + var(--safe-bottom));
+    padding-bottom: var(--safe-bottom);
+    background: rgba(10, 11, 18, 0.98);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border-top: 1px solid var(--border-subtle);
-    background: var(--bg-player);
+    border-right: none;
     z-index: 60;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
   }
+
   .sidebar-header,
   .sidebar-drop-card,
   .nav-section-title,
@@ -63,45 +454,209 @@
   .user-playlist-list {
     display: none !important;
   }
+
   .sidebar-content {
     flex-direction: row;
     justify-content: space-around;
     padding: 0;
     width: 100%;
+    height: 100%;
     align-items: center;
+    gap: 0;
   }
+
   .nav-section {
     flex-direction: row;
     width: 100%;
+    height: 100%;
     justify-content: space-around;
+    align-items: center;
+    gap: 0;
   }
+
+  .nav-item {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0;
+    gap: 3px;
+    border-radius: 0;
+    border: none;
+    background: transparent !important;
+    color: var(--text-muted);
+    font-size: 0.66rem;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .nav-item svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .nav-item span {
+    display: block !important;
+    white-space: nowrap;
+  }
+
+  .nav-item::before {
+    display: none !important;
+  }
+
+  .nav-item.active {
+    color: var(--accent-love-light);
+  }
+
+  .nav-item.active svg {
+    color: var(--accent-love);
+    transform: translateY(-1px) scale(1.08);
+  }
+
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: var(--accent-gradient);
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 0 8px var(--accent-love-glow);
+  }
+
+  /* ------------------------------------------------------------------------
+     6. RIGHT PANEL (QUEUE DRAWER) AS OVERLAY SHEET ON MOBILE
+     ------------------------------------------------------------------------ */
   .right-panel {
     position: fixed;
-    right: 0;
     top: 0;
-    height: calc(100vh - var(--player-height) - 56px);
-    width: 100%;
-    z-index: 80;
+    right: 0;
+    bottom: 0;
+    width: min(360px, 90vw);
+    height: 100%;
+    height: 100dvh;
+    z-index: 120;
+    background: var(--bg-surface-elevated);
+    border-left: 1px solid var(--border-glow);
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.75);
     transform: translateX(100%);
-    transition: transform var(--transition-normal);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .right-panel.open-mobile {
+
+  /* When drawer is OPEN on mobile */
+  .app-container:not(.right-panel-closed) .right-panel {
     transform: translateX(0);
   }
-  .player-bar {
-    grid-template-columns: 1fr auto;
+
+  .right-panel-header {
+    height: var(--header-height);
+    padding: 0 16px;
+  }
+
+  .right-panel-content {
+    padding: 12px;
+    height: calc(100% - var(--header-height));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ------------------------------------------------------------------------
+     7. MODALS & THEATER VIEW ON MOBILE
+     ------------------------------------------------------------------------ */
+  .modal-overlay {
+    padding: 16px;
+    align-items: center;
+  }
+
+  .modal-box {
+    width: 100% !important;
+    max-width: 520px !important;
+    max-height: 86vh !important;
+    max-height: 86dvh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 16px !important;
+  }
+
+  .modal-header h3 {
+    font-size: 1.15rem !important;
+  }
+
+  #love-letter-modal p {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+  }
+
+  #memory-clip-video {
+    max-height: 38vh !important;
+  }
+
+  .theater-view {
+    height: 100% !important;
+    height: 100dvh !important;
+  }
+
+  .theater-header {
+    height: 52px;
     padding: 0 14px;
   }
-  .player-center-controls {
-    display: none;
+
+  .theater-body {
+    padding: 12px 14px;
+    gap: 16px;
   }
-  .player-right-tools .volume-control {
-    display: none;
+
+  .video-frame-container {
+    max-height: 50vh !important;
   }
-  .lyrics-stage-body {
-    grid-template-columns: 1fr;
+}
+
+/* --------------------------------------------------------------------------
+   8. EXTRA SMALL / COMPACT MOBILE PHONES (<= 375px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 375px) {
+  .header-search-box {
+    padding: 4px 10px;
+    font-size: 0.78rem;
   }
-  .lyrics-stage-cover-wrap {
-    display: none;
+
+  .btn-eq-fx {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  .cards-grid {
+    gap: 8px;
+  }
+
+  .music-card {
+    padding: 8px;
+  }
+
+  .card-title {
+    font-size: 0.78rem;
+  }
+
+  .card-artist {
+    font-size: 0.7rem;
+  }
+
+  .nav-item {
+    font-size: 0.62rem;
+  }
+
+  .nav-item svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .main-scroll-content > div:first-child .btn-play-hero,
+  .main-scroll-content > div:first-child .btn-video-hero {
+    flex: 1 1 100%;
   }
 }

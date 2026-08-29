@@ -1,6 +1,6 @@
 /**
  * Zin Music - Main Application Entry Point
- * Orchestrates Audio Engine, Player, Playlist Manager, and UI
+ * Orchestrates Audio Engine, Player, Playlist Manager, Responsive Navigation, and UI
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -28,16 +28,31 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set default initial track into queue (without autoplay on initial page load)
   player.setQueue(CURATED_TRACKS, 0, false);
 
-  // Seek Bar Interaction
+  // Helper for seek calculations
+  const handleSeek = (element, clientX) => {
+    const rect = element.getBoundingClientRect();
+    const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    const percentage = (clickX / rect.width) * 100;
+    player.seek(percentage);
+  };
+
+  // Seek Bar Interactions (Desktop center bar)
   const seekBar = document.getElementById("seek-bar-container");
   if (seekBar) {
-    seekBar.addEventListener("click", (e) => {
-      const rect = seekBar.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const width = rect.width;
-      const percentage = (clickX / width) * 100;
-      player.seek(percentage);
-    });
+    seekBar.addEventListener("click", (e) => handleSeek(seekBar, e.clientX));
+  }
+
+  // Continuous Micro-Seekbar Interaction (Mobile top edge of mini-player)
+  const microSeekBar = document.getElementById("player-progress-strip");
+  if (microSeekBar) {
+    microSeekBar.addEventListener("click", (e) => handleSeek(microSeekBar, e.clientX));
+    
+    // Mobile touch scrubber support
+    microSeekBar.addEventListener("touchmove", (e) => {
+      if (e.touches && e.touches.length > 0) {
+        handleSeek(microSeekBar, e.touches[0].clientX);
+      }
+    }, { passive: true });
   }
 
   // Volume Slider
@@ -61,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Sidebar Collapse Toggle
+  // Sidebar Collapse Toggle (Desktop)
   const sidebarToggle = document.getElementById("btn-toggle-sidebar");
   const appContainer = document.getElementById("app-container");
   if (sidebarToggle && appContainer) {
@@ -70,12 +85,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Right Drawer Toggle button in Player bar
+  // Right Drawer (Queue) Toggle with Backdrop Sync
+  const drawerBackdrop = document.getElementById("drawer-backdrop");
   const toggleRightPanelBtn = document.getElementById("btn-toggle-right-panel");
+  const closeRightPanelBtn = document.getElementById("btn-close-right-panel");
+
+  const setRightPanelState = (isOpen) => {
+    if (!appContainer) return;
+    if (isOpen) {
+      appContainer.classList.remove("right-panel-closed");
+      if (drawerBackdrop) drawerBackdrop.classList.add("active");
+      if (toggleRightPanelBtn) toggleRightPanelBtn.classList.add("active");
+    } else {
+      appContainer.classList.add("right-panel-closed");
+      if (drawerBackdrop) drawerBackdrop.classList.remove("active");
+      if (toggleRightPanelBtn) toggleRightPanelBtn.classList.remove("active");
+    }
+  };
+
   if (toggleRightPanelBtn && appContainer) {
-    toggleRightPanelBtn.addEventListener("click", () => {
-      appContainer.classList.toggle("right-panel-closed");
-      toggleRightPanelBtn.classList.toggle("active", !appContainer.classList.contains("right-panel-closed"));
+    toggleRightPanelBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isCurrentlyClosed = appContainer.classList.contains("right-panel-closed");
+      setRightPanelState(isCurrentlyClosed);
+    });
+  }
+
+  if (closeRightPanelBtn) {
+    closeRightPanelBtn.addEventListener("click", () => {
+      setRightPanelState(false);
+    });
+  }
+
+  if (drawerBackdrop) {
+    drawerBackdrop.addEventListener("click", () => {
+      setRightPanelState(false);
     });
   }
 });

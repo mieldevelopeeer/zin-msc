@@ -251,6 +251,75 @@
   background: transparent;
 }
 
+/* Responsive View Header Banners (Memories & Liked Views) */
+.view-header-banner {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 28px;
+  background: linear-gradient(135deg, rgba(255, 51, 102, 0.22), rgba(255, 200, 55, 0.08), rgba(18, 19, 28, 0.95));
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 100, 150, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.view-header-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--radius-md);
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px var(--accent-love-glow);
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.view-header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.view-header-tag {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--accent-love-light);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.view-header-title {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.view-header-desc {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 600px) {
+  .view-header-banner {
+    padding: 16px;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .view-header-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
+    border-radius: var(--radius-sm);
+  }
+  .view-header-desc {
+    font-size: 0.8rem;
+}
+
 .top-header {
   height: var(--header-height);
   display: flex;
@@ -973,6 +1042,54 @@
   padding: 0 24px;
   z-index: 50;
   user-select: none;
+  position: relative;
+}
+
+/* Micro-Seekbar on Player Bar (for Mobile & Desktop) */
+.player-progress-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+}
+
+.player-progress-strip:hover {
+  height: 5px;
+}
+
+.player-progress-strip-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-gradient);
+  pointer-events: none;
+}
+
+.mobile-player-controls {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-mobile-play {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 2px 10px var(--accent-love-glow);
+}
+
+.btn-mobile-next {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
 /* Left: Track Details */

@@ -51,6 +51,10 @@
   --transition-fast: 0.15s var(--ease-smooth);
   --transition-normal: 0.25s var(--ease-smooth);
   --transition-slow: 0.4s var(--ease-smooth);
+  --mobile-player-height: 64px;
+  --mobile-nav-height: 56px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
 }
 
 /* Light Theme Variables */
@@ -77,17 +81,37 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-base);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Drawer Backdrop for Mobile */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 70;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Dynamic Ambient Canvas Glow in the background */
@@ -116,6 +140,7 @@ html, body {
   grid-template-rows: 1fr var(--player-height);
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   transition: grid-template-columns var(--transition-normal);
 }
@@ -172,3 +197,4 @@ h1, h2, h3, h4, h5, h6 {
   text-overflow: ellipsis;
 }
 .hidden { display: none !important; }
+

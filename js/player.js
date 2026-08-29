@@ -79,28 +79,37 @@ class ZinPlayer {
   loadTrack(track, autoplay = true) {
     if (!track) return;
     this.currentTrack = track;
-    this.audio.src = track.audioSrc;
+    const audioUrl = encodeURI(track.audioSrc);
+    if (this.audio.src !== audioUrl && !this.audio.src.endsWith(audioUrl)) {
+      this.audio.src = audioUrl;
+    }
 
     this.updateTrackMetaUI(track);
     this.updateAmbientGlow(track.ambientGlow);
     this.updateVideoEmbed(track);
 
     if (autoplay) {
-      this.audioEngine.init();
       this.play();
     }
   }
 
   play() {
     this.audioEngine.init();
-    this.audio.play().then(() => {
-      this.isPlaying = true;
-      this.updatePlayStateUI();
-    }).catch(e => {
-      // User gesture needed for first play
-      this.isPlaying = false;
-      this.updatePlayStateUI();
-    });
+    const playPromise = this.audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        this.isPlaying = true;
+        this.updatePlayStateUI();
+        if (this.videoEl && this.mode === "video" && this.videoEl.paused) {
+          this.videoEl.muted = true;
+          this.videoEl.currentTime = this.audio.currentTime || 0;
+          this.videoEl.play().catch(() => {});
+        }
+      }).catch(e => {
+        this.isPlaying = false;
+        this.updatePlayStateUI();
+      });
+    }
   }
 
   pause() {
@@ -263,10 +272,13 @@ class ZinPlayer {
     const current = this.audio.currentTime || 0;
     const total = this.audio.duration || 0;
 
-    // Update Progress Bar
+    // Update Progress Bar & Micro-strip
     const percent = total > 0 ? (current / total) * 100 : 0;
     const fill = document.getElementById("seek-bar-fill");
     if (fill) fill.style.width = `${percent}%`;
+
+    const stripFill = document.getElementById("player-progress-strip-fill");
+    if (stripFill) stripFill.style.width = `${percent}%`;
 
     const timeCurr = document.getElementById("time-current");
     if (timeCurr) timeCurr.textContent = this.formatTime(current);
@@ -339,8 +351,9 @@ class ZinPlayer {
     const video = document.getElementById("theater-video");
     if (video && track.videoSrc) {
       video.muted = true; // Never play duplicate audio
-      if (video.src !== track.videoSrc && !video.src.endsWith(encodeURI(track.videoSrc))) {
-        video.src = track.videoSrc;
+      const videoUrl = encodeURI(track.videoSrc);
+      if (video.src !== videoUrl && !video.src.endsWith(videoUrl)) {
+        video.src = videoUrl;
       }
       video.currentTime = this.audio.currentTime || 0;
       if (this.isPlaying && this.mode === "video") {

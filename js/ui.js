@@ -186,30 +186,30 @@ class ZinUI {
 
   renderMemoriesView(container) {
     container.innerHTML = `
-      <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 30px; background: linear-gradient(135deg, rgba(255, 51, 102, 0.22), rgba(255, 200, 55, 0.1)); padding: 26px; border-radius: var(--radius-lg); border: 1px solid rgba(255, 100, 150, 0.3);">
-        <div style="width: 110px; height: 110px; border-radius: var(--radius-md); background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-love-glow); font-size: 3rem;">
+      <div class="view-header-banner">
+        <div class="view-header-icon">
           📸
         </div>
-        <div>
-          <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--accent-love-light); letter-spacing: 0.08em;">Our Special Reel</div>
-          <h1 style="font-size: 2.2rem; margin: 4px 0 6px; color: #fff;">Our Memories & Moments</h1>
-          <p style="color: var(--text-secondary); font-size: 0.9rem;">Cherished video clips of our journey. Click any memory below to watch with clear sound.</p>
+        <div class="view-header-content">
+          <div class="view-header-tag">Our Special Reel</div>
+          <h1 class="view-header-title">Our Memories & Moments</h1>
+          <p class="view-header-desc">Cherished video clips of our journey. Click any memory below to watch with clear sound.</p>
         </div>
       </div>
 
-      <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px;">
+      <div class="cards-grid">
         ${MEMORY_CLIPS.map(clip => `
-          <div class="music-card" style="padding: 16px; border-radius: var(--radius-md); background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle);" onclick="window.zinUI.openMemoryClip('${clip.id}')">
-            <div class="card-img-wrapper" style="aspect-ratio: 16/10; margin-bottom: 14px;">
+          <div class="music-card" onclick="window.zinUI.openMemoryClip('${clip.id}')">
+            <div class="card-img-wrapper" style="aspect-ratio: 16/10; margin-bottom: 12px;">
               <video src="${clip.videoSrc}#t=1.0" class="card-video-thumb" preload="metadata" muted playsinline></video>
               <div class="card-badge" style="background: var(--accent-gradient); color: #fff;">PLAY CLIP</div>
               <button class="card-play-btn" style="background: var(--accent-gradient); color: #fff;">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div class="card-title truncate" style="font-size: 1.05rem; font-weight: 700; color: #fff;">${clip.title}</div>
-            <div class="card-artist truncate" style="color: var(--accent-love-light); font-size: 0.84rem; margin-bottom: 8px;">${clip.subtitle}</div>
-            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; font-style: italic;">"${clip.note}"</p>
+            <div class="card-title truncate">${clip.title}</div>
+            <div class="card-artist truncate" style="color: var(--accent-love-light); font-size: 0.82rem; margin-bottom: 6px;">${clip.subtitle}</div>
+            <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4; font-style: italic;">"${clip.note}"</p>
           </div>
         `).join("")}
       </div>
@@ -237,7 +237,7 @@ class ZinUI {
 
     if (video) {
       video.muted = false; // Play clip's audio cleanly without any other sound
-      video.src = clip.videoSrc;
+      video.src = encodeURI(clip.videoSrc);
       video.currentTime = 0;
       video.play().catch(() => {});
     }
@@ -259,14 +259,14 @@ class ZinUI {
     const likedTracks = this.playlistManager.getLikedTracks();
 
     container.innerHTML = `
-      <div style="display: flex; gap: 24px; align-items: center; margin-bottom: 30px; background: linear-gradient(135deg, rgba(255, 51, 102, 0.25), rgba(0,0,0,0.4)); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
-        <div style="width: 130px; height: 130px; border-radius: var(--radius-md); background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--accent-love-glow);">
-          <svg width="60" height="60" viewBox="0 0 24 24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <div class="view-header-banner">
+        <div class="view-header-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         </div>
-        <div>
-          <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--accent-love-light);">Love Collection</div>
-          <h1 style="font-size: 2.2rem; margin: 4px 0 8px;">Favorite Love Songs</h1>
-          <div style="color: var(--text-secondary); font-size: 0.88rem;">${likedTracks.length} tracks favorited with love</div>
+        <div class="view-header-content">
+          <div class="view-header-tag">Love Collection</div>
+          <h1 class="view-header-title">Favorite Love Songs</h1>
+          <div class="view-header-desc">${likedTracks.length} tracks favorited with love</div>
         </div>
       </div>
 
