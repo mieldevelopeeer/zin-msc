@@ -1581,3 +1581,86 @@
 .switch-control input:checked + .switch-slider:before {
   transform: translateX(20px);
 }
+
+/* ==========================================================================
+   OFFLINE & DOWNLOAD UI STYLES
+   ========================================================================== */
+.btn-player-download {
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.btn-player-download:hover {
+  color: #00f2fe;
+  transform: scale(1.15);
+}
+
+.btn-download-track {
+  opacity: 0.7;
+  transition: all var(--transition-fast);
+}
+
+.btn-download-track:hover {
+  opacity: 1;
+  color: #00f2fe !important;
+  transform: scale(1.15);
+}
+
+.offline-cached-badge {
+  display: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #1ed760;
+  background: rgba(30, 215, 96, 0.15);
+  border: 1px solid rgba(30, 215, 96, 0.3);
+  padding: 2px 6px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+
+.offline-cached-badge.visible {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Floating Toast */
+.zin-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: rgba(18, 16, 28, 0.95);
+  color: #fff;
+  border: 1px solid rgba(255, 51, 102, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 51, 102, 0.25);
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 10000;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  white-space: nowrap;
+  max-width: 90vw;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.zin-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 768px) {
+  .zin-toast {
+    bottom: 130px;
+    font-size: 0.82rem;
+    padding: 10px 18px;
+  }
+  }
+}
+

@@ -1,0 +1,23 @@
+{
+  "name": "Zin • For My Love 💕",
+  "short_name": "ZinLove",
+  "description": "Our special romantic playlist and memories - Made with love.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090a10",
+  "theme_color": "#090a10",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}

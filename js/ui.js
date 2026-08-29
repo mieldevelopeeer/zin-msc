@@ -96,6 +96,10 @@ class ZinUI {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
               Shuffle Playlist
             </button>
+            <button class="btn-video-hero" id="btn-offline-all" style="background: rgba(30, 215, 96, 0.15); border-color: rgba(30, 215, 96, 0.35); color: #fff;" onclick="window.zinOffline.saveAllSongsForOffline()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Save All Offline 💾</span>
+            </button>
             <button class="btn-video-hero" style="background: rgba(255, 51, 102, 0.15); border-color: rgba(255, 51, 102, 0.35); color: #fff;" onclick="window.zinUI.openLoveLetterModal()">
               <span>💌 Read Love Note</span>
             </button>
@@ -134,22 +138,28 @@ class ZinUI {
         <div class="section-header">
           <div>
             <div class="section-title">✨ Our 8 Songs</div>
-            <div class="section-subtitle">Click any track to listen & watch with synced lyrics</div>
+            <div class="section-subtitle">Click any track to listen & watch with synced lyrics • Offline Ready</div>
           </div>
         </div>
         <div class="quick-picks-grid">
           ${CURATED_TRACKS.map(t => `
-            <div class="quick-pick-item ${this.player.currentTrack && this.player.currentTrack.id === t.id ? 'active' : ''}" onclick="window.zinUI.playTrackById('${t.id}')">
+            <div class="quick-pick-item ${this.player.currentTrack && this.player.currentTrack.id === t.id ? 'active' : ''}" data-track-id="${t.id}" onclick="window.zinUI.playTrackById('${t.id}')">
               <div class="quick-pick-thumb">
                 <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
               </div>
               <div class="quick-pick-info">
-                <div class="quick-pick-title truncate" style="font-weight: 700; color: #fff;">${t.title}</div>
+                <div class="quick-pick-title truncate" style="font-weight: 700; color: #fff;">
+                  ${t.title}
+                  <span class="offline-cached-badge ${window.zinOffline && window.zinOffline.isCached(t.id) ? 'visible' : ''}">✓ Saved</span>
+                </div>
                 <div class="quick-pick-artist truncate" style="color: var(--accent-love-light); font-size: 0.8rem;">${t.artist} • ${t.genre}</div>
               </div>
               <div class="quick-pick-actions" onclick="event.stopPropagation()">
-                <button class="btn-item-like ${this.playlistManager.isLiked(t.id) ? 'liked' : ''}" onclick="window.zinUI.toggleLikeTrack('${t.id}')">
+                <button class="btn-item-like ${this.playlistManager.isLiked(t.id) ? 'liked' : ''}" title="Favorite" onclick="window.zinUI.toggleLikeTrack('${t.id}')">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="${this.playlistManager.isLiked(t.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+                <button class="btn-item-like btn-download-track" title="Download Song & Save Offline" onclick="window.zinOffline.downloadTrack('${t.id}')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 </button>
               </div>
             </div>
@@ -193,7 +203,7 @@ class ZinUI {
         <div class="view-header-content">
           <div class="view-header-tag">Our Special Reel</div>
           <h1 class="view-header-title">Our Memories & Moments</h1>
-          <p class="view-header-desc">Cherished video clips of our journey. Click any memory below to watch with clear sound.</p>
+          <p class="view-header-desc">Cherished video clips of our journey. Click any memory below to watch or download.</p>
         </div>
       </div>
 
@@ -233,7 +243,15 @@ class ZinUI {
 
     if (titleEl) titleEl.textContent = clip.title;
     if (subtitleEl) subtitleEl.textContent = clip.subtitle;
-    if (noteEl) noteEl.textContent = `"${clip.note}"`;
+    if (noteEl) {
+      noteEl.innerHTML = `
+        <div style="margin-bottom: 10px;">"${clip.note}"</div>
+        <button class="btn-video-hero" style="background: var(--accent-gradient); color: #fff; padding: 6px 14px; font-size: 0.82rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;" onclick="window.zinOffline.downloadClip('${clip.id}')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Save Video to Device
+        </button>
+      `;
+    }
 
     if (video) {
       video.muted = false; // Play clip's audio cleanly without any other sound
@@ -278,17 +296,23 @@ class ZinUI {
       ` : `
         <div class="quick-picks-grid">
           ${likedTracks.map(t => `
-            <div class="quick-pick-item" onclick="window.zinUI.playTrackById('${t.id}')">
+            <div class="quick-pick-item" data-track-id="${t.id}" onclick="window.zinUI.playTrackById('${t.id}')">
               <div class="quick-pick-thumb">
                 <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
               </div>
               <div class="quick-pick-info">
-                <div class="quick-pick-title truncate">${t.title}</div>
+                <div class="quick-pick-title truncate">
+                  ${t.title}
+                  <span class="offline-cached-badge ${window.zinOffline && window.zinOffline.isCached(t.id) ? 'visible' : ''}">✓ Saved</span>
+                </div>
                 <div class="quick-pick-artist truncate">${t.artist} • ${t.genre}</div>
               </div>
               <div class="quick-pick-actions" onclick="event.stopPropagation()">
-                <button class="btn-item-like liked" onclick="window.zinUI.toggleLikeTrack('${t.id}')">
+                <button class="btn-item-like liked" title="Favorite" onclick="window.zinUI.toggleLikeTrack('${t.id}')">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </button>
+                <button class="btn-item-like btn-download-track" title="Download Song" onclick="window.zinOffline.downloadTrack('${t.id}')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 </button>
               </div>
             </div>
@@ -310,13 +334,24 @@ class ZinUI {
 
       <div class="quick-picks-grid">
         ${tracks.map(t => `
-          <div class="quick-pick-item" onclick="window.zinUI.playTrackById('${t.id}')">
+          <div class="quick-pick-item" data-track-id="${t.id}" onclick="window.zinUI.playTrackById('${t.id}')">
             <div class="quick-pick-thumb">
               <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
             </div>
             <div class="quick-pick-info">
-              <div class="quick-pick-title truncate">${t.title}</div>
+              <div class="quick-pick-title truncate">
+                ${t.title}
+                <span class="offline-cached-badge ${window.zinOffline && window.zinOffline.isCached(t.id) ? 'visible' : ''}">✓ Saved</span>
+              </div>
               <div class="quick-pick-artist truncate">${t.artist} • ${t.genre}</div>
+            </div>
+            <div class="quick-pick-actions" onclick="event.stopPropagation()">
+              <button class="btn-item-like ${this.playlistManager.isLiked(t.id) ? 'liked' : ''}" title="Favorite" onclick="window.zinUI.toggleLikeTrack('${t.id}')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="${this.playlistManager.isLiked(t.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="btn-item-like btn-download-track" title="Download Song" onclick="window.zinOffline.downloadTrack('${t.id}')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
             </div>
           </div>
         `).join("")}
@@ -345,13 +380,24 @@ class ZinUI {
       ` : `
         <div class="quick-picks-grid">
           ${results.map(t => `
-            <div class="quick-pick-item" onclick="window.zinUI.playTrackById('${t.id}')">
+            <div class="quick-pick-item" data-track-id="${t.id}" onclick="window.zinUI.playTrackById('${t.id}')">
               <div class="quick-pick-thumb">
                 <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
               </div>
               <div class="quick-pick-info">
-                <div class="quick-pick-title truncate">${t.title}</div>
+                <div class="quick-pick-title truncate">
+                  ${t.title}
+                  <span class="offline-cached-badge ${window.zinOffline && window.zinOffline.isCached(t.id) ? 'visible' : ''}">✓ Saved</span>
+                </div>
                 <div class="quick-pick-artist truncate">${t.artist}</div>
+              </div>
+              <div class="quick-pick-actions" onclick="event.stopPropagation()">
+                <button class="btn-item-like ${this.playlistManager.isLiked(t.id) ? 'liked' : ''}" title="Favorite" onclick="window.zinUI.toggleLikeTrack('${t.id}')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="${this.playlistManager.isLiked(t.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+                <button class="btn-item-like btn-download-track" title="Download Song" onclick="window.zinOffline.downloadTrack('${t.id}')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
               </div>
             </div>
           `).join("")}

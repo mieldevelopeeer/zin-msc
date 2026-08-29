@@ -10,7 +10,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 185,
-    cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-hakbang.jpg",
     audioSrc: "zin-list/Zin-Hakbang.mp4",
     videoSrc: "zin-list/Zin-Hakbang.mp4",
     genre: "OPM / Indie Pop",
@@ -33,7 +33,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 210,
-    cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-kung.jpg",
     audioSrc: "zin-list/Zin-Kung.mp4",
     videoSrc: "zin-list/Zin-Kung.mp4",
     genre: "OPM / Acoustic Soul",
@@ -55,7 +55,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 195,
-    cover: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-kung-pt2.jpg",
     audioSrc: "zin-list/Zin-Kung.pt2.mp4",
     videoSrc: "zin-list/Zin-Kung.pt2.mp4",
     genre: "OPM / Ballad & Lo-Fi",
@@ -76,7 +76,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 175,
-    cover: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-mahika.jpg",
     audioSrc: "zin-list/Zin-Mahika.mp4",
     videoSrc: "zin-list/Zin-Mahika.mp4",
     genre: "OPM / Romantic Pop",
@@ -98,7 +98,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 180,
-    cover: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-slow-dance.jpg",
     audioSrc: "zin-list/Zin-Slow Dance.mp4",
     videoSrc: "zin-list/Zin-Slow Dance.mp4",
     genre: "R&B / Romantic Soul",
@@ -119,7 +119,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 215,
-    cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-starry-night.jpg",
     audioSrc: "zin-list/Zin-Starry Night.mp4",
     videoSrc: "zin-list/Zin-Starry Night.mp4",
     genre: "Synthwave / Dream Pop",
@@ -140,7 +140,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 205,
-    cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-tinatangi.jpg",
     audioSrc: "zin-list/Zin-Tinatangi.mp4",
     videoSrc: "zin-list/Zin-Tinatangi.mp4",
     genre: "OPM / Soulful Acoustic",
@@ -161,7 +161,7 @@ const CURATED_TRACKS = [
     artist: "Zin Music",
     album: "Our Playlist 💕",
     duration: 170,
-    cover: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-with-u.jpg",
     audioSrc: "zin-list/Zin-With U.mp4",
     videoSrc: "zin-list/Zin-With U.mp4",
     genre: "Pop / Upbeat Love",
@@ -183,7 +183,7 @@ const DEFAULT_PLAYLISTS = [
     id: "zin-pl-all",
     title: "Our Complete Love Playlist 💕",
     subtitle: "8 songs handpicked just for you",
-    cover: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/zin-track-hakbang.jpg",
     trackIds: ["zin-track-hakbang", "zin-track-kung", "zin-track-kung-pt2", "zin-track-mahika", "zin-track-slow-dance", "zin-track-starry-night", "zin-track-tinatangi", "zin-track-with-u"]
   }
 ];
@@ -202,7 +202,7 @@ const MEMORY_CLIPS = [
     title: "Memory Clip 01 • Sweet Smiles",
     subtitle: "Cherished moments and gentle laughter",
     videoSrc: "zin-clip/Clip1.mp4",
-    cover: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/clip-1.jpg",
     note: "Every smile shared with you is a memory I keep close to my heart."
   },
   {
@@ -210,7 +210,7 @@ const MEMORY_CLIPS = [
     title: "Memory Clip 02 • Beautiful Days",
     subtitle: "Unforgettable moments walking side by side",
     videoSrc: "zin-clip/Clip2.mp4",
-    cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/clip-2.jpg",
     note: "The happiest moments are the simplest ones spent together."
   },
   {
@@ -218,8 +218,7 @@ const MEMORY_CLIPS = [
     title: "Memory Clip 03 • Forever & Always",
     subtitle: "Our journey together filled with love and joy",
     videoSrc: "zin-clip/Clip3.mp4",
-    cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800&auto=format&fit=crop",
+    cover: "thumbnails/clip-3.jpg",
     note: "Looking forward to creating a thousand more beautiful memories with you."
   }
 ];
-

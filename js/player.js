@@ -1,6 +1,7 @@
 /**
  * Zin Music - Core Player Controller
- * Handles Audio Playback, Video Mode Switching, Queue, Shuffling, and Video Frame Thumbnails
+ * Handles Audio Playback, Video Mode Switching, Queue, Shuffling,
+ * Background Audio Playback (Screen Off / Sleep), MediaSession API, and Lock-Screen Controls
  */
 
 class ZinPlayer {
@@ -18,8 +19,11 @@ class ZinPlayer {
     this.history = [];
     this.volume = 0.8;
     this.isMuted = false;
+    this.wakeLock = null;
 
     this.initAudioListeners();
+    this.setupMediaSession();
+    this.setupBackgroundLockListeners();
   }
 
   initAudioListeners() {
@@ -29,6 +33,9 @@ class ZinPlayer {
       this.isPlaying = true;
       this.audioEngine.resume();
       this.updatePlayStateUI();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "playing";
+      }
       if (this.videoEl && this.videoEl.src && this.mode === "video" && this.videoEl.paused) {
         this.videoEl.muted = true;
         this.videoEl.play().catch(() => {});
@@ -38,6 +45,9 @@ class ZinPlayer {
     this.audio.addEventListener("pause", () => {
       this.isPlaying = false;
       this.updatePlayStateUI();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "paused";
+      }
       if (this.videoEl && !this.videoEl.paused) {
         this.videoEl.pause();
       }
@@ -45,7 +55,7 @@ class ZinPlayer {
 
     this.audio.addEventListener("timeupdate", () => {
       this.onTimeUpdate();
-      if (this.videoEl && this.mode === "video") {
+      if (this.videoEl && this.mode === "video" && !document.hidden) {
         if (Math.abs(this.videoEl.currentTime - this.audio.currentTime) > 0.4) {
           this.videoEl.currentTime = this.audio.currentTime;
         }
@@ -58,6 +68,9 @@ class ZinPlayer {
 
     this.audio.addEventListener("loadedmetadata", () => {
       this.updateDurationUI();
+      if (this.currentTrack) {
+        this.updateMediaSessionMetadata(this.currentTrack);
+      }
     });
 
     if (this.videoEl) {
@@ -66,13 +79,97 @@ class ZinPlayer {
         if (this.audio.paused) this.play();
       });
       this.videoEl.addEventListener("pause", () => {
-        if (!this.audio.paused && this.mode === "video") this.pause();
+        // Crucial: Only pause audio if user explicitly paused (not when OS pauses video on screen lock)
+        if (!document.hidden && !this.audio.paused && this.mode === "video") {
+          this.pause();
+        }
       });
       this.videoEl.addEventListener("seeking", () => {
         if (Math.abs(this.audio.currentTime - this.videoEl.currentTime) > 0.3) {
           this.audio.currentTime = this.videoEl.currentTime;
         }
       });
+    }
+  }
+
+  /**
+   * Keep Audio Playing When Phone Screen Is Locked / Off / In Sleep
+   */
+  setupBackgroundLockListeners() {
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        // Screen locked or tab backgrounded:
+        // Ensure audio element continues playing uninterrupted
+        if (this.isPlaying && this.audio.paused) {
+          this.audio.play().catch(() => {});
+        }
+      } else {
+        // Returned to foreground: resync video element if in video mode
+        if (this.isPlaying && this.mode === "video" && this.videoEl) {
+          this.videoEl.currentTime = this.audio.currentTime || 0;
+          this.videoEl.play().catch(() => {});
+        }
+      }
+    });
+  }
+
+  /**
+   * Media Session API for iOS Dynamic Island, Lock-Screen Controls, and Android Notifications
+   */
+  setupMediaSession() {
+    if (!("mediaSession" in navigator)) return;
+
+    try {
+      navigator.mediaSession.setActionHandler("play", () => {
+        this.play();
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        this.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        this.prev();
+      });
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        this.next();
+      });
+      navigator.mediaSession.setActionHandler("seekto", (details) => {
+        if (details.seekTime !== null && details.seekTime !== undefined) {
+          this.seekTo(details.seekTime);
+        }
+      });
+      navigator.mediaSession.setActionHandler("seekforward", (details) => {
+        const skipTime = details.seekOffset || 10;
+        this.seekTo(Math.min(this.audio.currentTime + skipTime, this.audio.duration || 0));
+      });
+      navigator.mediaSession.setActionHandler("seekbackward", (details) => {
+        const skipTime = details.seekOffset || 10;
+        this.seekTo(Math.max(this.audio.currentTime - skipTime, 0));
+      });
+    } catch (e) {
+      console.warn("MediaSession action handler error:", e);
+    }
+  }
+
+  updateMediaSessionMetadata(track) {
+    if (!("mediaSession" in navigator) || !track) return;
+
+    try {
+      const fullCoverUrl = new URL(track.cover, window.location.href).href;
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: track.title,
+        artist: track.artist,
+        album: "Zin • For My Love 💕",
+        artwork: [
+          { src: fullCoverUrl, sizes: "96x96", type: "image/jpeg" },
+          { src: fullCoverUrl, sizes: "128x128", type: "image/jpeg" },
+          { src: fullCoverUrl, sizes: "192x192", type: "image/jpeg" },
+          { src: fullCoverUrl, sizes: "256x256", type: "image/jpeg" },
+          { src: fullCoverUrl, sizes: "512x512", type: "image/jpeg" }
+        ]
+      });
+    } catch (e) {
+      console.warn("Could not set MediaSession metadata:", e);
     }
   }
 
@@ -87,6 +184,7 @@ class ZinPlayer {
     this.updateTrackMetaUI(track);
     this.updateAmbientGlow(track.ambientGlow);
     this.updateVideoEmbed(track);
+    this.updateMediaSessionMetadata(track);
 
     if (autoplay) {
       this.play();
@@ -100,6 +198,9 @@ class ZinPlayer {
       playPromise.then(() => {
         this.isPlaying = true;
         this.updatePlayStateUI();
+        if ("mediaSession" in navigator) {
+          navigator.mediaSession.playbackState = "playing";
+        }
         if (this.videoEl && this.mode === "video" && this.videoEl.paused) {
           this.videoEl.muted = true;
           this.videoEl.currentTime = this.audio.currentTime || 0;
@@ -116,6 +217,9 @@ class ZinPlayer {
     this.audio.pause();
     this.isPlaying = false;
     this.updatePlayStateUI();
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.playbackState = "paused";
+    }
   }
 
   togglePlay() {
@@ -145,7 +249,7 @@ class ZinPlayer {
         if (this.repeatMode === "all") {
           nextIndex = 0;
         } else {
-          return; // Stop at end of queue
+          return;
         }
       }
       this.playQueueIndex(nextIndex);
@@ -153,12 +257,12 @@ class ZinPlayer {
   }
 
   prev() {
+    if (this.queue.length === 0) return;
+
     if (this.audio.currentTime > 3) {
-      this.audio.currentTime = 0;
+      this.seekTo(0);
       return;
     }
-
-    if (this.queue.length === 0) return;
 
     let prevIndex = this.queueIndex - 1;
     if (prevIndex < 0) {
@@ -167,12 +271,20 @@ class ZinPlayer {
     this.playQueueIndex(prevIndex);
   }
 
-  seek(percentage) {
-    if (!this.audio.duration) return;
-    const targetTime = (percentage / 100) * this.audio.duration;
-    this.audio.currentTime = targetTime;
-    if (this.videoEl && this.mode === "video") {
-      this.videoEl.currentTime = targetTime;
+  seekTo(seconds) {
+    if (!isNaN(seconds) && isFinite(seconds)) {
+      this.audio.currentTime = seconds;
+      if (this.videoEl && this.mode === "video") {
+        this.videoEl.currentTime = seconds;
+      }
+      this.onTimeUpdate();
+    }
+  }
+
+  seekPercentage(percent) {
+    if (this.audio.duration) {
+      const targetTime = (percent / 100) * this.audio.duration;
+      this.seekTo(targetTime);
     }
   }
 
@@ -282,6 +394,17 @@ class ZinPlayer {
 
     const timeCurr = document.getElementById("time-current");
     if (timeCurr) timeCurr.textContent = this.formatTime(current);
+
+    // Update Lock-Screen Position State for iOS / Android
+    if ("mediaSession" in navigator && "setPositionState" in navigator.mediaSession && total > 0) {
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: total,
+          playbackRate: this.audio.playbackRate || 1,
+          position: Math.min(current, total)
+        });
+      } catch (e) {}
+    }
   }
 
   formatTime(seconds) {
@@ -298,14 +421,29 @@ class ZinPlayer {
   }
 
   updatePlayStateUI() {
-    const playIcons = document.querySelectorAll(".play-state-icon");
+    const playBtn = document.getElementById("btn-play");
+    const mobilePlayBtn = document.getElementById("btn-mobile-play");
     const thumb = document.getElementById("player-current-thumb");
 
-    playIcons.forEach(icon => {
-      if (this.isPlaying) {
-        icon.innerHTML = `<path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
+    const playIcon = `<path d="M8 5v14l11-7z"/>`;
+    const pauseIcon = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
+
+    if (playBtn) {
+      const svgIcon = playBtn.querySelector("svg");
+      if (svgIcon) svgIcon.innerHTML = this.isPlaying ? pauseIcon : playIcon;
+    }
+
+    if (mobilePlayBtn) {
+      const svgIcon = mobilePlayBtn.querySelector("svg");
+      if (svgIcon) svgIcon.innerHTML = this.isPlaying ? pauseIcon : playIcon;
+    }
+
+    document.querySelectorAll(".quick-pick-item").forEach(item => {
+      const trackId = item.getAttribute("data-track-id");
+      if (this.currentTrack && trackId === this.currentTrack.id) {
+        item.classList.add("active");
       } else {
-        icon.innerHTML = `<path fill="currentColor" d="M8 5v14l11-7z"/>`;
+        item.classList.remove("active");
       }
     });
 
@@ -356,7 +494,7 @@ class ZinPlayer {
         video.src = videoUrl;
       }
       video.currentTime = this.audio.currentTime || 0;
-      if (this.isPlaying && this.mode === "video") {
+      if (this.isPlaying && this.mode === "video" && !document.hidden) {
         video.play().catch(() => {});
       } else {
         video.pause();

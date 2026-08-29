@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioEngine = new ZinAudioEngine(audioElement);
   const player = new ZinPlayer(audioEngine);
   const playlistManager = new ZinPlaylistManager();
+  const offlineManager = new ZinOfflineManager();
   const ui = new ZinUI(player, playlistManager, audioEngine);
 
   const thumbnailManager = new ZinThumbnailManager();
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.zinAudioEngine = audioEngine;
   window.zinPlayer = player;
   window.zinPlaylistManager = playlistManager;
+  window.zinOffline = offlineManager;
   window.zinUI = ui;
 
   // Initialize UI
