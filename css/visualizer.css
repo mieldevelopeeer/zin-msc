@@ -1,0 +1,164 @@
+/* ==========================================================================
+   AUDIO VISUALIZER & IMMERSIVE STAGES
+   ========================================================================== */
+.visualizer-overlay-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(18, 20, 28, 0.9), rgba(9, 10, 15, 0.95));
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+}
+
+#audio-visualizer-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.visualizer-center-info {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.visualizer-mode-select {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  z-index: 5;
+  display: flex;
+  gap: 6px;
+}
+
+.btn-vis-mode {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: var(--transition-fast);
+}
+
+.btn-vis-mode:hover, .btn-vis-mode.active {
+  color: #fff;
+  border-color: var(--accent-spotify);
+  background: rgba(30, 215, 96, 0.2);
+}
+
+/* Fullscreen Immersive Lyrics View */
+.lyrics-stage-modal {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #1b1335 0%, #08090d 100%);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.98);
+  transition: all var(--transition-slow);
+}
+
+.lyrics-stage-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.lyrics-stage-header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.lyrics-stage-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  padding: 20px 48px 60px;
+  gap: 50px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.lyrics-stage-cover-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.lyrics-stage-cover {
+  width: 320px;
+  height: 320px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 60px rgba(30, 215, 96, 0.25);
+  animation: pulseAlbum 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseAlbum {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+.lyrics-scroll-container {
+  height: 80vh;
+  overflow-y: auto;
+  padding: 150px 0;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  scrollbar-width: none;
+}
+
+.lyrics-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.stage-lyric-line {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.25);
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  line-height: 1.3;
+}
+
+.stage-lyric-line:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stage-lyric-line.active {
+  color: #ffffff;
+  font-size: 2.7rem;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.6), 0 0 60px var(--accent-spotify-glow);
+  transform: scale(1.04) translateX(10px);
+}
+
+.stage-lyric-line.passed {
+  color: rgba(255, 255, 255, 0.4);
+}

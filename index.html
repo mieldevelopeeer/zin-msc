@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zin • For My Love 💕</title>
+  <meta name="description" content="A special, romantic Zin Music playlist made with love for you.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/visualizer.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Dynamic Ambient Glow Background -->
+  <div id="ambient-glow"></div>
+
+  <!-- Hidden Master Audio Player -->
+  <audio id="main-audio-player" preload="auto"></audio>
+
+  <!-- Main Grid App Container -->
+  <div class="app-container" id="app-container">
+
+    <!-- ==========================================================================
+         1. LEFT SIDEBAR (Romantic Navigation)
+         ========================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo" style="cursor: pointer;" onclick="window.zinUI.renderMainContent('home')">
+          <div class="brand-icon-wrapper" style="background: var(--accent-gradient); box-shadow: 0 0 16px var(--accent-love-glow);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <span class="brand-text">Zin<span style="color: var(--accent-love-light);">Love</span></span>
+          <span class="brand-badge" style="background: linear-gradient(135deg, #ff3366, #ff7597);">FOR YOU</span>
+        </div>
+        <button class="nav-toggle-btn" id="btn-toggle-sidebar" title="Collapse Sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- Navigation Section -->
+        <nav class="nav-section">
+          <div class="nav-section-title">Our Music</div>
+          <div class="nav-item active" data-view="home" onclick="window.zinUI.renderMainContent('home')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            <span>Our Songs</span>
+          </div>
+          <div class="nav-item" data-view="memories" onclick="window.zinUI.renderMainContent('memories')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+            <span>Our Memories 📸</span>
+          </div>
+          <div class="nav-item" data-view="liked" onclick="window.zinUI.renderMainContent('liked')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>Favorites</span>
+          </div>
+          <div class="nav-item" data-view="video" onclick="window.zinPlayer.setMode('video')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg>
+            <span>Video Theater</span>
+          </div>
+          <div class="nav-item" onclick="window.zinUI.openLoveLetterModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Love Letter 💌</span>
+          </div>
+        </nav>
+
+        <!-- Sweet Dedication Card at Sidebar Bottom -->
+        <div class="sidebar-drop-card" style="background: linear-gradient(145deg, rgba(255, 51, 102, 0.12), rgba(255, 200, 55, 0.08)); border-color: rgba(255, 100, 150, 0.25);">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">💌</div>
+          <h4 style="color: var(--accent-love-light);">To Mal 💖</h4>
+          <p style="font-size: 0.8rem; line-height: 1.4;">"Happy Motmot! Every melody in this playlist is for you."</p>
+          <button class="btn-upload-trigger" style="background: var(--accent-gradient); color: #fff; font-weight: 700;" onclick="window.zinUI.openLoveLetterModal()">Read Note</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================================================
+         2. MAIN WRAPPER (Top Header & Dynamic Scrollable View)
+         ========================================================================== -->
+    <main class="main-wrapper">
+      <!-- Top Navigation -->
+      <header class="top-header">
+        <div class="header-search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="main-search-input" class="header-search-input" placeholder="Search our songs...">
+        </div>
+
+        <!-- Action tools -->
+        <div class="header-actions">
+          <button class="btn-eq-fx" style="background: rgba(255, 51, 102, 0.15); border-color: rgba(255, 51, 102, 0.3); color: #fff;" onclick="window.zinUI.openLoveLetterModal()" title="Open Love Letter">
+            <span>💌 Love Note</span>
+          </button>
+
+          <button class="btn-icon-header" id="btn-toggle-theme" title="Toggle Theme">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Horizontal Mood Filter Chips -->
+      <div class="mood-chips-container" id="mood-chips-container">
+        <!-- Rendered by ui.js -->
+      </div>
+
+      <!-- Main Dynamic Scrollable Content -->
+      <div class="main-scroll-content" id="main-scroll-content">
+        <!-- Rendered by ui.js -->
+      </div>
+    </main>
+
+    <!-- ==========================================================================
+         3. RIGHT CONTEXT DRAWER (Song Queue)
+         ========================================================================== -->
+    <aside class="right-panel" id="right-panel">
+      <div class="right-panel-header">
+        <div style="font-weight: 700; font-size: 0.95rem; color: #fff; display: flex; align-items: center; gap: 8px;">
+          <span>🎵 Song Queue</span>
+          <span class="card-badge" style="background: var(--accent-gradient); color: #fff; font-size: 0.65rem;">UP NEXT</span>
+        </div>
+        <button class="nav-toggle-btn" onclick="document.getElementById('app-container').classList.add('right-panel-closed')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="right-panel-content">
+        <div id="right-queue-section">
+          <div class="queue-list" id="queue-items-container">
+            <!-- Rendered by player.js with real video frame thumbnails -->
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================================================
+         4. BOTTOM FUSION PLAYER BAR
+         ========================================================================== -->
+    <footer class="player-bar">
+      <!-- Left: Track Details -->
+      <div class="player-track-info">
+        <div class="player-thumb-wrapper">
+          <video src="" id="player-current-thumb" class="player-video-thumb" preload="metadata" muted playsinline></video>
+        </div>
+        <div class="player-meta">
+          <span class="player-title truncate" id="player-title">Track Title</span>
+          <span class="player-artist truncate" id="player-artist">Zin Music</span>
+        </div>
+        <button class="btn-player-fav" id="btn-player-fav" title="Save to Favorites" onclick="window.zinUI.toggleLikeTrack(window.zinPlayer.currentTrack ? window.zinPlayer.currentTrack.id : null)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+      <!-- Center: Controls & Progress -->
+      <div class="player-center-controls">
+        <div class="controls-row">
+          <button class="btn-ctrl" id="btn-shuffle" title="Shuffle" onclick="window.zinPlayer.toggleShuffle()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          </button>
+          <button class="btn-ctrl" id="btn-prev" title="Previous" onclick="window.zinPlayer.prev()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button class="btn-ctrl btn-play-main" id="btn-play" style="background: var(--accent-gradient); box-shadow: 0 0 20px var(--accent-love-glow);" title="Play/Pause" onclick="window.zinPlayer.togglePlay()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="play-state-icon"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="btn-ctrl" id="btn-next" title="Next" onclick="window.zinPlayer.next()">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+          <button class="btn-ctrl" id="btn-repeat" title="Repeat" onclick="window.zinPlayer.toggleRepeat()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </button>
+        </div>
+
+        <div class="progress-row">
+          <span class="time-stamp" id="time-current">0:00</span>
+          <div class="seek-bar-container" id="seek-bar-container">
+            <div class="seek-bar-fill" id="seek-bar-fill" style="background: var(--accent-gradient);">
+              <div class="seek-bar-handle"></div>
+            </div>
+          </div>
+          <span class="time-stamp" id="time-total">0:00</span>
+        </div>
+      </div>
+
+      <!-- Right: Mode Switch & Volume -->
+      <div class="player-right-tools">
+        <!-- Audio / Video Mode Toggle Switch -->
+        <div class="mode-toggle-switch">
+          <button class="mode-btn mode-audio active" id="mode-btn-audio" onclick="window.zinPlayer.setMode('audio')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            SONG
+          </button>
+          <button class="mode-btn" id="mode-btn-video" onclick="window.zinPlayer.setMode('video')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg>
+            VIDEO
+          </button>
+        </div>
+
+        <button class="btn-ctrl active" id="btn-toggle-right-panel" title="Song Queue / Up Next">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </button>
+
+        <div class="volume-control">
+          <button class="btn-ctrl" onclick="window.zinPlayer.toggleMute()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" id="volume-icon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          </button>
+          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="80">
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==========================================================================
+       5. FULLSCREEN THEATER / VIDEO VIEW
+       ========================================================================== -->
+  <div class="theater-view" id="theater-view">
+    <div class="theater-header">
+      <div class="flex items-center gap-3">
+        <span style="font-weight: 800; font-size: 1rem; color: #fff;">🎬 Romantic Video Theater</span>
+        <span class="card-badge" style="background: var(--accent-gradient); color: #fff;">OUR MOMENTS</span>
+      </div>
+      <button class="nav-toggle-btn" onclick="window.zinPlayer.setMode('audio')">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="theater-body" style="display: flex; align-items: center; justify-content: center; width: 100%; height: calc(100% - 60px);">
+      <div class="video-frame-container" style="width: 100%; height: 100%; max-height: 80vh;">
+        <video id="theater-video" style="width: 100%; height: 100%; object-fit: contain; background: #000; border-radius: inherit;" playsinline controls></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       7. SWEET LOVE LETTER MODAL (GIFT FEATURE)
+       ========================================================================== -->
+  <div class="modal-overlay" id="love-letter-modal">
+    <div class="modal-box" style="max-width: 520px; background: linear-gradient(160deg, #181524, #0f0e17); border: 1px solid rgba(255, 100, 150, 0.35); box-shadow: 0 20px 60px rgba(255, 51, 102, 0.3);">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.6rem;">💌</span>
+          <div>
+            <h3 style="font-size: 1.3rem; color: #fff;">A Note For You</h3>
+            <p style="font-size: 0.8rem; color: var(--accent-love-light);">Made with all my heart</p>
+          </div>
+        </div>
+        <button class="nav-toggle-btn" onclick="window.zinUI.closeLoveLetterModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div style="padding: 24px 8px; line-height: 1.7; color: #e0e4f0; font-size: 0.96rem;">
+        <p style="margin-bottom: 16px; font-weight: 700; color: #fff; font-size: 1.25rem;">Happy Motmot, Mal! 💖</p>
+        <p style="margin-bottom: 14px;">I know that you are always trying your best to be the best for me, but to me, you are already the best. We know each other’s flaws—maybe not all of them, but definitely not just a little either, hehehe. 😊</p>
+        <p style="margin-bottom: 14px;">I’ve seen all of your efforts, your pains, and the hard times you’ve gone through. I am sorry for not always being expressive, but deep inside, everything you have done for me is truly and deeply appreciated. Deep within my soul, you are already an inseparable part of my existence and who I am today. You are the one who taught me what it means to be responsible.</p>
+        <p style="margin-bottom: 14px;">Thank you for all the sacrifices and patience that you have given me, and for the immense love you always share. Thank you very much, my Mal.</p>
+        <p style="margin-bottom: 24px; color: var(--accent-love-light); font-style: italic; font-size: 1.08rem; font-weight: 600;">"I love you so much, always and forever." 💖</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 18px;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">From my heart to yours ✨</span>
+          <button class="btn-play-hero" style="background: var(--accent-gradient); box-shadow: 0 0 16px var(--accent-love-glow);" onclick="window.zinUI.closeLoveLetterModal(); window.zinPlayer.play();">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Play Our Songs
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       8. OUR MEMORIES VIDEO MODAL (ZIN CLIPS)
+       ========================================================================== -->
+  <div class="modal-overlay" id="memory-modal">
+    <div class="modal-box" style="max-width: 680px; width: 92%; background: linear-gradient(160deg, #181524, #0f0e17); border: 1px solid rgba(255, 100, 150, 0.35); box-shadow: 0 20px 60px rgba(255, 51, 102, 0.3); padding: 20px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 14px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.5rem;">🎞️</span>
+          <div>
+            <h3 id="memory-modal-title" style="font-size: 1.2rem; color: #fff;">Our Memory Clip</h3>
+            <p id="memory-modal-subtitle" style="font-size: 0.8rem; color: var(--accent-love-light);">Little Moments, Big Feelings</p>
+          </div>
+        </div>
+        <button class="nav-toggle-btn" onclick="window.zinUI.closeMemoryClip()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div style="border-radius: var(--radius-md); overflow: hidden; background: #000; box-shadow: var(--shadow-md); margin-bottom: 16px;">
+        <video id="memory-clip-video" style="width: 100%; height: auto; max-height: 400px; display: block; object-fit: contain;" controls playsinline></video>
+      </div>
+
+      <div id="memory-modal-note" style="color: #e0e4f0; font-size: 0.92rem; line-height: 1.5; font-style: italic; background: rgba(255, 51, 102, 0.08); border-left: 3px solid var(--accent-love); padding: 12px 16px; border-radius: var(--radius-sm);">
+        "Every memory with you is a moment I treasure forever."
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/thumbnail-generator.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/playlist.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

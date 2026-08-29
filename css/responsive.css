@@ -1,0 +1,107 @@
+/* ==========================================================================
+   RESPONSIVE DESIGN & ADAPTIVE LAYOUTS
+   ========================================================================== */
+@media (max-width: 1200px) {
+  :root {
+    --right-panel-width: 300px;
+  }
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: 76px;
+  }
+  .sidebar-header .brand-text,
+  .sidebar-header .brand-badge,
+  .nav-item span,
+  .nav-section-title,
+  .playlist-create-btn span,
+  .user-playlist-list,
+  .sidebar-drop-card {
+    display: none !important;
+  }
+  .nav-item {
+    justify-content: center;
+    padding: 12px;
+  }
+  .playlist-create-btn {
+    justify-content: center;
+    padding: 12px;
+  }
+  .theater-body {
+    grid-template-columns: 1fr;
+  }
+  .theater-lyrics-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr var(--player-height);
+  }
+  .sidebar {
+    position: fixed;
+    bottom: var(--player-height);
+    left: 0;
+    width: 100%;
+    height: 56px;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-player);
+    z-index: 60;
+  }
+  .sidebar-header,
+  .sidebar-drop-card,
+  .nav-section-title,
+  .playlist-create-btn,
+  .user-playlist-list {
+    display: none !important;
+  }
+  .sidebar-content {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0;
+    width: 100%;
+    align-items: center;
+  }
+  .nav-section {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+  .right-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: calc(100vh - var(--player-height) - 56px);
+    width: 100%;
+    z-index: 80;
+    transform: translateX(100%);
+    transition: transform var(--transition-normal);
+  }
+  .right-panel.open-mobile {
+    transform: translateX(0);
+  }
+  .player-bar {
+    grid-template-columns: 1fr auto;
+    padding: 0 14px;
+  }
+  .player-center-controls {
+    display: none;
+  }
+  .player-right-tools .volume-control {
+    display: none;
+  }
+  .lyrics-stage-body {
+    grid-template-columns: 1fr;
+  }
+  .lyrics-stage-cover-wrap {
+    display: none;
+  }
+}
