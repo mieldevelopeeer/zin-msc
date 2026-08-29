@@ -323,7 +323,7 @@ class ZinPlayer {
 
     if (titleEl) titleEl.textContent = track.title;
     if (artistEl) artistEl.textContent = track.artist;
-    if (thumbEl && track.videoSrc) thumbEl.src = track.videoSrc + "#t=1.0";
+    if (thumbEl && track.cover) thumbEl.src = track.cover;
     if (bannerTitle) bannerTitle.textContent = `${track.title} • ${track.artist}`;
 
     // Update Favorite heart state
@@ -391,13 +391,15 @@ class ZinPlayer {
     listEl.innerHTML = this.queue.map((track, idx) => `
       <div class="queue-item ${idx === this.queueIndex ? 'active' : ''}" onclick="window.zinPlayer.playQueueIndex(${idx})">
         <div class="queue-thumb">
-          <video src="${track.videoSrc}#t=1.0" class="queue-video-thumb" preload="metadata" muted playsinline></video>
+          <img src="${track.cover}" data-cover-id="${track.id}" class="card-img" alt="${track.title}">
         </div>
         <div class="queue-info">
           <div class="queue-title truncate">${track.title}</div>
           <div class="queue-artist truncate">${track.artist}</div>
         </div>
-        <span style="font-size: 0.72rem; color: var(--text-muted);">${this.formatTime(track.duration)}</span>
+        <button class="btn-item-like ${window.zinPlaylistManager && window.zinPlaylistManager.isLiked(track.id) ? 'liked' : ''}" onclick="event.stopPropagation(); window.zinUI.toggleLikeTrack('${track.id}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="${window.zinPlaylistManager && window.zinPlaylistManager.isLiked(track.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
       </div>
     `).join("");
   }

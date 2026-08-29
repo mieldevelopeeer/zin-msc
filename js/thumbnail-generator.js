@@ -39,6 +39,13 @@ class ZinThumbnailManager {
         return;
       }
 
+      // If already cached, update DOM immediately and move on without loading video
+      if (this.cache.has(item.id)) {
+        this.updateDOMCovers(item.id, this.cache.get(item.id));
+        processNext();
+        return;
+      }
+
       this.extractFrame(videoSrc, 1.5, (dataUrl) => {
         if (dataUrl) {
           item.cover = dataUrl;
@@ -57,7 +64,7 @@ class ZinThumbnailManager {
 
   extractFrame(videoUrl, seekTime, callback) {
     const video = document.createElement("video");
-    video.src = videoUrl;
+    video.src = encodeURI(videoUrl);
     video.muted = true;
     video.playsInline = true;
     video.preload = "auto";

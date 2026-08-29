@@ -116,7 +116,7 @@ class ZinUI {
           ${MEMORY_CLIPS.map(clip => `
             <div class="music-card" onclick="window.zinUI.openMemoryClip('${clip.id}')">
               <div class="card-img-wrapper" style="aspect-ratio: 16/10;">
-                <video src="${clip.videoSrc}#t=1.0" class="card-video-thumb" preload="metadata" muted playsinline></video>
+                <img src="${clip.cover}" data-cover-id="${clip.id}" class="card-img" alt="${clip.title}" loading="lazy">
                 <div class="card-badge" style="background: var(--accent-gradient); color: #fff;">MEMORIES</div>
                 <button class="card-play-btn" style="background: var(--accent-gradient); color: #fff;">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -141,7 +141,7 @@ class ZinUI {
           ${CURATED_TRACKS.map(t => `
             <div class="quick-pick-item ${this.player.currentTrack && this.player.currentTrack.id === t.id ? 'active' : ''}" onclick="window.zinUI.playTrackById('${t.id}')">
               <div class="quick-pick-thumb">
-                <video src="${t.videoSrc}#t=1.0" class="quick-pick-video-thumb" preload="metadata" muted playsinline></video>
+                <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
               </div>
               <div class="quick-pick-info">
                 <div class="quick-pick-title truncate" style="font-weight: 700; color: #fff;">${t.title}</div>
@@ -169,7 +169,7 @@ class ZinUI {
           ${CURATED_TRACKS.map(t => `
             <div class="music-card" onclick="window.zinUI.playTrackInVideoMode('${t.id}')">
               <div class="card-img-wrapper" style="aspect-ratio: 16/10;">
-                <video src="${t.videoSrc}#t=1.0" class="card-video-thumb" preload="metadata" muted playsinline></video>
+                <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
                 <div class="card-badge" style="background: var(--accent-gradient); color: #fff;">OUR VIDEO</div>
                 <button class="card-play-btn" style="background: var(--accent-gradient); color: #fff;">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -201,7 +201,7 @@ class ZinUI {
         ${MEMORY_CLIPS.map(clip => `
           <div class="music-card" onclick="window.zinUI.openMemoryClip('${clip.id}')">
             <div class="card-img-wrapper" style="aspect-ratio: 16/10; margin-bottom: 12px;">
-              <video src="${clip.videoSrc}#t=1.0" class="card-video-thumb" preload="metadata" muted playsinline></video>
+              <img src="${clip.cover}" data-cover-id="${clip.id}" class="card-img" alt="${clip.title}" loading="lazy">
               <div class="card-badge" style="background: var(--accent-gradient); color: #fff;">PLAY CLIP</div>
               <button class="card-play-btn" style="background: var(--accent-gradient); color: #fff;">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -280,7 +280,7 @@ class ZinUI {
           ${likedTracks.map(t => `
             <div class="quick-pick-item" onclick="window.zinUI.playTrackById('${t.id}')">
               <div class="quick-pick-thumb">
-                <video src="${t.videoSrc}#t=1.0" class="quick-pick-video-thumb" preload="metadata" muted playsinline></video>
+                <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
               </div>
               <div class="quick-pick-info">
                 <div class="quick-pick-title truncate">${t.title}</div>
@@ -312,7 +312,7 @@ class ZinUI {
         ${tracks.map(t => `
           <div class="quick-pick-item" onclick="window.zinUI.playTrackById('${t.id}')">
             <div class="quick-pick-thumb">
-              <video src="${t.videoSrc}#t=1.0" class="quick-pick-video-thumb" preload="metadata" muted playsinline></video>
+              <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
             </div>
             <div class="quick-pick-info">
               <div class="quick-pick-title truncate">${t.title}</div>
@@ -347,7 +347,7 @@ class ZinUI {
           ${results.map(t => `
             <div class="quick-pick-item" onclick="window.zinUI.playTrackById('${t.id}')">
               <div class="quick-pick-thumb">
-                <video src="${t.videoSrc}#t=1.0" class="quick-pick-video-thumb" preload="metadata" muted playsinline></video>
+                <img src="${t.cover}" data-cover-id="${t.id}" class="card-img" alt="${t.title}" loading="lazy">
               </div>
               <div class="quick-pick-info">
                 <div class="quick-pick-title truncate">${t.title}</div>
